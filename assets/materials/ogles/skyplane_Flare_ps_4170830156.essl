@@ -1,0 +1,16 @@
+//ver200 es skyplane_Flare
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_SkySampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec2 varying_TEXCOORD0;
+
+void main()
+{
+    highp vec4 _27 = texture2D(s_SkySampler, varying_TEXCOORD0);
+    _27.w = 1.0;
+    gl_FragColor = _27;
+}
+

@@ -1,0 +1,56 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_DistFogColor;
+uniform vec4 g_FogParam;
+uniform vec4 g_BoneTM[210];
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec4 in_var_BLENDWEIGHT;
+attribute vec4 in_var_BLENDINDICES;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD2;
+
+vec4 _55;
+
+void main()
+{
+    ivec4 _63 = ivec4(in_var_BLENDINDICES * 3.0);
+    int _64 = _63.x;
+    int _79 = _63.y;
+    int _95 = _63.z;
+    vec3 _110 = ((vec3(dot(in_var_POSITION, g_BoneTM[_64]), dot(in_var_POSITION, g_BoneTM[_64 + 1]), dot(in_var_POSITION, g_BoneTM[_64 + 2])) * in_var_BLENDWEIGHT.x) + (vec3(dot(in_var_POSITION, g_BoneTM[_79]), dot(in_var_POSITION, g_BoneTM[_79 + 1]), dot(in_var_POSITION, g_BoneTM[_79 + 2])) * in_var_BLENDWEIGHT.y)) + (vec3(dot(in_var_POSITION, g_BoneTM[_95]), dot(in_var_POSITION, g_BoneTM[_95 + 1]), dot(in_var_POSITION, g_BoneTM[_95 + 2])) * in_var_BLENDWEIGHT.z);
+    float _123 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _145 = (((max(g_SkyLightColor.xyz * _123, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _123))) + vec3(0.20000000298023223876953125)).xyz + g_SelfPower;
+    vec4 _147 = vec4(_145.x, _145.y, _145.z, _55.w);
+    _147.w = 0.0;
+    gl_Position = vec4(_110, 1.0) * g_WorldViewProj;
+    varying_COLOR0 = _147;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _55.z, _55.w);
+    varying_TEXCOORD2 = clamp(vec2((g_FogParam.y - distance(_110, g_EyePosModel)) / (g_FogParam.y - g_FogParam.x), 1.0), vec2(0.0), vec2(1.0));
+}
+

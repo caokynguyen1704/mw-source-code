@@ -1,0 +1,35 @@
+//ver200 es particle_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_fBlendMode;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec4 in_var_COLOR0;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec2 in_var_TEXCOORD1;
+varying vec4 varying_COLOR0;
+varying vec2 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD1;
+
+void main()
+{
+    gl_Position = in_var_POSITION * g_WorldViewProj;
+    varying_COLOR0 = in_var_COLOR0;
+    varying_TEXCOORD0 = in_var_TEXCOORD0;
+    varying_TEXCOORD1 = in_var_TEXCOORD1;
+}
+

@@ -1,0 +1,17 @@
+//ver200 es block_Main
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+
+void main()
+{
+    highp vec4 _28 = texture2D(s_DiffuseSampler, varying_TEXCOORD0);
+    highp vec3 _31 = _28.xyz * varying_COLOR0.xyz;
+    gl_FragColor = vec4(_31.x, _31.y, _31.z, _28.w);
+}
+

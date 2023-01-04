@@ -1,0 +1,20 @@
+//ver200 es ui_element_Main
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_MaskSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+varying highp vec2 varying_TEXCOORD1;
+
+void main()
+{
+    highp vec4 _31 = texture2D(s_DiffuseSampler, varying_TEXCOORD0);
+    highp vec4 _36 = vec4(varying_COLOR0.x, varying_COLOR0.y, varying_COLOR0.z, _31.w);
+    _36.w = _31.w * varying_COLOR0.w;
+    gl_FragColor = _36 * texture2D(s_MaskSampler, varying_TEXCOORD1);
+}
+

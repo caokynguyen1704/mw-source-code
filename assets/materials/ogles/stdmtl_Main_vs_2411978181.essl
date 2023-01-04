@@ -1,0 +1,74 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_BoneTM[210];
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform vec4 g_RimColor;
+uniform float g_RimPower;
+uniform float g_TransU;
+uniform float g_TransV;
+uniform float g_ScaleU;
+uniform float g_ScaleV;
+uniform float g_RotUV;
+uniform float g_fUVMul;
+uniform float g_ftime;
+uniform vec3 g_OverlayColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec4 in_var_BLENDWEIGHT;
+attribute vec4 in_var_BLENDINDICES;
+attribute vec2 in_var_TEXCOORD1;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD3;
+varying vec3 varying_TEXCOORD4;
+varying vec3 varying_TEXCOORD5;
+
+vec4 _64;
+
+void main()
+{
+    ivec4 _73 = ivec4(in_var_BLENDINDICES * 3.0);
+    int _74 = _73.x;
+    int _89 = _73.y;
+    vec4 _109 = vec4((vec3(dot(in_var_POSITION, g_BoneTM[_74]), dot(in_var_POSITION, g_BoneTM[_74 + 1]), dot(in_var_POSITION, g_BoneTM[_74 + 2])) * in_var_BLENDWEIGHT.x) + (vec3(dot(in_var_POSITION, g_BoneTM[_89]), dot(in_var_POSITION, g_BoneTM[_89 + 1]), dot(in_var_POSITION, g_BoneTM[_89 + 2])) * in_var_BLENDWEIGHT.y), 1.0);
+    float _136 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _154 = ((max(g_SkyLightColor.xyz * _136, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _136))) + vec3(0.20000000298023223876953125);
+    vec4 _156 = vec4(_154.x, _154.y, _154.z, _64.w);
+    _156.w = 0.0;
+    float _160 = radians(g_RotUV);
+    vec2 _167 = (in_var_TEXCOORD1 - vec2(0.5)) * vec2(g_ScaleU, g_ScaleV);
+    float _168 = _167.x;
+    float _169 = cos(_160);
+    float _171 = _167.y;
+    float _172 = sin(_160);
+    gl_Position = _109 * g_WorldViewProj;
+    varying_COLOR0 = _156;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _64.z, _64.w);
+    varying_TEXCOORD3 = (vec2((_168 * _169) + (_171 * _172), ((-_168) * _172) + (_171 * _169)) + vec2(0.5)) + vec2(g_TransU, g_TransV);
+    varying_TEXCOORD4 = normalize(normalize(normalize(in_var_NORMAL) * mat3(g_World[0].xyz, g_World[1].xyz, g_World[2].xyz)));
+    varying_TEXCOORD5 = normalize(g_EyePos - (_109 * g_World).xyz);
+}
+

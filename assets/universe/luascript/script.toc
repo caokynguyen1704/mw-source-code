@@ -1,0 +1,20 @@
+
+##game script files
+
+luascript/init.lua
+
+luascript/common.lua
+luascript/buffdef.lua
+luascript/blocks.lua
+luascript/items.lua
+luascript/mobs.lua
+luascript/gm.lua
+luascript/cutscenes/cutscene0.lua
+luascript/cutscenes/cutscene_util.lua
+luascript/aiconfig.lua
+luascript/itemskillconfig.lua
+luascript/TerrainBlockConfig.lua
+luascript/enum_comm.lua
+luascript/customBiomeConfig.lua
+
+

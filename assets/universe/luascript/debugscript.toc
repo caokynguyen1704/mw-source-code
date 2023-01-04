@@ -1,0 +1,6 @@
+
+##game script files
+
+luascript/DebugTools.lua
+luascript/socket.lua
+luascript/LuaPanda.lua

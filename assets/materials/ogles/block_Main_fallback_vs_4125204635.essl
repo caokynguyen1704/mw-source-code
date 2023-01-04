@@ -1,0 +1,26 @@
+//ver200 es block_Main_fallback
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform vec3 g_ChunkOrigin;
+
+
+attribute vec4 in_var_POSITION;
+
+void main()
+{
+    gl_Position = vec4((in_var_POSITION + vec4(g_ChunkOrigin, 0.0)).xyz, 1.0) * g_WorldViewProj;
+}
+

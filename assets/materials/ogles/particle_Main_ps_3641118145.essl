@@ -1,0 +1,104 @@
+//ver200 es particle_Main
+precision mediump float;
+precision highp int;
+
+uniform highp float g_shadowdensity;
+uniform highp float g_fTime;
+uniform highp vec3 g_EyePos;
+uniform highp vec3 g_EyePosModel;
+uniform highp vec3 g_LightSCMPos;
+uniform highp vec4 g_ShadowCenter;
+uniform highp mat4 g_depthproj;
+uniform highp mat4 g_referencepoint;
+uniform highp vec3 g_warfogparameter;
+uniform highp vec3 g_warfogcolor;
+uniform highp vec4 g_AmbientLight;
+uniform highp mat4 g_World;
+uniform highp mat4 g_WorldView;
+uniform highp mat4 g_WorldViewProj;
+uniform highp float g_fBlendMode;
+
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_MaskSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+varying highp vec2 varying_TEXCOORD1;
+
+void main()
+{
+    highp vec4 _45 = texture2D(s_DiffuseSampler, varying_TEXCOORD0);
+    highp vec4 _46 = _45 * varying_COLOR0;
+    highp vec4 _124;
+    if (g_fBlendMode == 1.0)
+    {
+        highp vec4 _69;
+        if (varying_COLOR0.x <= 0.5)
+        {
+            highp vec4 _61 = _46;
+            _61.x = (_45.x * varying_COLOR0.x) * 2.0;
+            _69 = _61;
+        }
+        else
+        {
+            highp vec4 _68 = _46;
+            _68.x = 1.0 - (((1.0 - _45.x) * (1.0 - varying_COLOR0.x)) * 2.0);
+            _69 = _68;
+        }
+        highp vec4 _86;
+        if (varying_COLOR0.y <= 0.5)
+        {
+            highp vec4 _78 = _69;
+            _78.y = (_45.y * varying_COLOR0.y) * 2.0;
+            _86 = _78;
+        }
+        else
+        {
+            highp vec4 _85 = _69;
+            _85.y = 1.0 - (((1.0 - _45.y) * (1.0 - varying_COLOR0.y)) * 2.0);
+            _86 = _85;
+        }
+        highp vec4 _103;
+        if (varying_COLOR0.z <= 0.5)
+        {
+            highp vec4 _95 = _86;
+            _95.z = (_45.z * varying_COLOR0.z) * 2.0;
+            _103 = _95;
+        }
+        else
+        {
+            highp vec4 _102 = _86;
+            _102.z = 1.0 - (((1.0 - _45.z) * (1.0 - varying_COLOR0.z)) * 2.0);
+            _103 = _102;
+        }
+        _124 = _103;
+    }
+    else
+    {
+        highp vec4 _123;
+        if (g_fBlendMode == 2.0)
+        {
+            highp vec3 _110 = _45.xyz + varying_COLOR0.xyz;
+            _123 = vec4(_110.x, _110.y, _110.z, _46.w);
+        }
+        else
+        {
+            highp vec4 _122;
+            if (g_fBlendMode == 3.0)
+            {
+                highp vec3 _120 = vec3(1.0) - ((vec3(1.0) - _45.xyz) * (vec3(1.0) - varying_COLOR0.xyz));
+                _122 = vec4(_120.x, _120.y, _120.z, _46.w);
+            }
+            else
+            {
+                _122 = _46;
+            }
+            _123 = _122;
+        }
+        _124 = _123;
+    }
+    gl_FragColor = _124 * texture2D(s_MaskSampler, varying_TEXCOORD1);
+}
+

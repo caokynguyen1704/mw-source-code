@@ -1,0 +1,8 @@
+## 基础类
+sandboxengine/gamelogic/uistage/manager/UIStageInterface.lua
+sandboxengine/gamelogic/uistage/manager/UIStageCustomEventMgr.lua
+sandboxengine/gamelogic/uistage/manager/UIStageDirector.lua
+sandboxengine/gamelogic/uistage/manager/UIStageLoading.lua
+
+## 新增的派生类往后加
+sandboxengine/gamelogic/uistage/uistages/UIStageBase.lua

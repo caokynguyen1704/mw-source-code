@@ -1,0 +1,61 @@
+//ver200 es stdmtl_Main
+precision mediump float;
+precision highp int;
+
+uniform highp float g_shadowdensity;
+uniform highp float g_fTime;
+uniform highp vec3 g_EyePos;
+uniform highp vec3 g_EyePosModel;
+uniform highp vec3 g_LightSCMPos;
+uniform highp vec4 g_ShadowCenter;
+uniform highp mat4 g_depthproj;
+uniform highp mat4 g_referencepoint;
+uniform highp vec3 g_warfogparameter;
+uniform highp vec3 g_warfogcolor;
+uniform highp vec4 g_AmbientLight;
+uniform highp vec4 g_DistFogColor;
+uniform highp vec4 g_FogParam;
+uniform highp mat4 g_World;
+uniform highp mat4 g_WorldView;
+uniform highp mat4 g_WorldViewProj;
+uniform highp float g_ModelTransparent;
+uniform highp vec3 g_SelfPower;
+uniform highp float g_SpecPower;
+uniform highp vec3 g_SunDirection;
+uniform highp vec4 g_SkyLightColor;
+uniform highp vec4 g_TorchLightColor;
+uniform highp vec4 g_InstanceData;
+uniform highp float g_TransU;
+uniform highp float g_TransV;
+uniform highp float g_ScaleU;
+uniform highp float g_ScaleV;
+uniform highp float g_RotUV;
+uniform highp float g_fUVMul;
+uniform highp float g_ftime;
+
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_AlphaDISampler;
+uniform highp sampler2D s_SpecSelfSampler;
+uniform highp sampler2D s_EmissiveSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec4 varying_TEXCOORD0;
+varying highp vec2 varying_TEXCOORD2;
+varying highp vec2 varying_TEXCOORD3;
+
+void main()
+{
+    highp vec4 _62 = texture2D(s_AlphaDISampler, varying_TEXCOORD0.xy);
+    highp float _63 = _62.x;
+    highp vec4 _64 = texture2D(s_DiffuseSampler, varying_TEXCOORD0.xy);
+    _64.w = _63;
+    if ((_63 - 0.5) < 0.0)
+    {
+        discard;
+    }
+    highp vec3 _103 = mix(g_DistFogColor.xyz, (((mix(varying_COLOR0.xyz, vec3(1.0), vec3(_63)).xyz * _64.xyz) + (texture2D(s_SpecSelfSampler, varying_TEXCOORD3).xyz * g_SelfPower)).xyz + (texture2D(s_EmissiveSampler, varying_TEXCOORD0.xy * g_fUVMul) * g_ftime).xyz).xyz, vec3(varying_TEXCOORD2.x));
+    gl_FragColor = vec4(_103.x, _103.y, _103.z, _64.w);
+}
+

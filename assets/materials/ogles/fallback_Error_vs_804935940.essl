@@ -1,0 +1,9 @@
+//ver200 es fallback_Error
+
+attribute vec4 in_var_POSITION;
+
+void main()
+{
+    gl_Position = in_var_POSITION;
+}
+

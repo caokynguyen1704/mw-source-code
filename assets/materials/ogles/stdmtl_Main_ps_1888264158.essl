@@ -1,0 +1,19 @@
+//ver200 es stdmtl_Main
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_AlphaDISampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec4 varying_TEXCOORD0;
+
+void main()
+{
+    highp vec4 _41 = texture2D(s_DiffuseSampler, varying_TEXCOORD0.xy);
+    _41.w = texture2D(s_AlphaDISampler, varying_TEXCOORD0.xy).x;
+    highp vec3 _45 = clamp(varying_COLOR0, vec4(0.0), vec4(1.0)).xyz * _41.xyz;
+    gl_FragColor = vec4(_45.x, _45.y, _45.z, _41.w);
+}
+

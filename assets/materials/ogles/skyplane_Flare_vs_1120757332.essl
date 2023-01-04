@@ -1,0 +1,35 @@
+//ver200 es skyplane_Flare
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_SkyHeight;
+uniform float g_DayTime;
+uniform float g_fAmount;
+
+
+attribute vec3 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+varying vec2 varying_TEXCOORD0;
+
+void main()
+{
+    float _36 = g_DayTime * 0.00999999977648258209228515625;
+    float _37 = sin(_36);
+    float _38 = cos(_36);
+    gl_Position = (vec4(vec3((in_var_POSITION.x * _38) - (in_var_POSITION.y * _37), (in_var_POSITION.x * _37) + (in_var_POSITION.y * _38), in_var_POSITION.z) + g_EyePos, 1.0) * g_WorldViewProj).xyww;
+    varying_TEXCOORD0 = in_var_TEXCOORD0;
+}
+

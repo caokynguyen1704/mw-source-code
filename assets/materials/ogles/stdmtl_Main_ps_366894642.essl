@@ -1,0 +1,61 @@
+//ver200 es stdmtl_Main
+precision mediump float;
+precision highp int;
+
+uniform highp float g_shadowdensity;
+uniform highp float g_fTime;
+uniform highp vec3 g_EyePos;
+uniform highp vec3 g_EyePosModel;
+uniform highp vec3 g_LightSCMPos;
+uniform highp vec4 g_ShadowCenter;
+uniform highp mat4 g_depthproj;
+uniform highp mat4 g_referencepoint;
+uniform highp vec3 g_warfogparameter;
+uniform highp vec3 g_warfogcolor;
+uniform highp vec4 g_AmbientLight;
+uniform highp vec4 g_DistFogColor;
+uniform highp vec4 g_FogParam;
+uniform highp mat4 g_World;
+uniform highp mat4 g_WorldView;
+uniform highp mat4 g_WorldViewProj;
+uniform highp float g_ModelTransparent;
+uniform highp vec3 g_SelfPower;
+uniform highp float g_SpecPower;
+uniform highp vec3 g_SunDirection;
+uniform highp vec4 g_SkyLightColor;
+uniform highp vec4 g_TorchLightColor;
+uniform highp vec4 g_InstanceData;
+uniform highp vec4 g_RimColor;
+uniform highp float g_RimPower;
+uniform highp float g_TransU;
+uniform highp float g_TransV;
+uniform highp float g_ScaleU;
+uniform highp float g_ScaleV;
+uniform highp float g_RotUV;
+uniform highp vec3 g_OverlayColor;
+
+
+uniform highp sampler2D s_DiffuseSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 in_var_COLOR0;
+varying highp vec4 varying_TEXCOORD0;
+varying highp vec2 in_var_TEXCOORD2;
+varying highp vec2 in_var_TEXCOORD3;
+varying highp vec3 varying_TEXCOORD4;
+varying highp vec3 varying_TEXCOORD5;
+
+void main()
+{
+    highp vec4 _52 = texture2D(s_DiffuseSampler, varying_TEXCOORD0.xy);
+    if ((_52.w - 0.5) < 0.0)
+    {
+        discard;
+    }
+    highp float _60 = 1.0 - clamp(dot(varying_TEXCOORD5, varying_TEXCOORD4), 0.0, 1.0);
+    highp vec3 _73 = (g_RimColor.xyz * pow(_60, g_RimPower * 100.0)) + (g_RimColor.xyz * pow(_60, g_RimPower));
+    highp vec4 _78 = vec4(_73.x, _73.y, _73.z, _52.w);
+    _78.w = g_RimColor.w * pow(_60, g_RimPower * 5.0);
+    gl_FragColor = _78;
+}
+

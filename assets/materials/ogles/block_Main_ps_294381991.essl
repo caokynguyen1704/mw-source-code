@@ -1,0 +1,53 @@
+//ver200 es block_Main
+precision mediump float;
+precision highp int;
+
+uniform highp float g_shadowdensity;
+uniform highp float g_fTime;
+uniform highp vec3 g_EyePos;
+uniform highp vec3 g_EyePosModel;
+uniform highp vec3 g_LightSCMPos;
+uniform highp vec4 g_ShadowCenter;
+uniform highp mat4 g_depthproj;
+uniform highp mat4 g_referencepoint;
+uniform highp vec3 g_warfogparameter;
+uniform highp vec3 g_warfogcolor;
+uniform highp vec4 g_SunLightColor;
+uniform highp vec4 g_SunLightDir;
+uniform highp vec4 g_SpecularColor;
+uniform highp vec4 g_AmbientLight;
+uniform highp vec4 g_DistFogColor;
+uniform highp vec4 g_FogParam;
+uniform highp mat4 g_World;
+uniform highp mat4 g_WorldView;
+uniform highp mat4 g_WorldViewProj;
+uniform highp vec3 g_ChunkOrigin;
+uniform highp vec4 g_SkyLightColor;
+uniform highp vec4 g_TorchLightColor;
+uniform highp float g_fUVMul;
+uniform highp float g_ftime;
+uniform highp vec3 g_vSaturation;
+uniform highp vec3 g_vColorScale;
+
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_DepthMapSampler;
+uniform highp sampler2D s_EmissiveSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec4 varying_COLOR1;
+varying highp vec3 varying_TEXCOORD0;
+varying highp vec4 varying_TEXCOORD1;
+
+void main()
+{
+    highp vec4 _53 = texture2D(s_DiffuseSampler, varying_TEXCOORD0.xy);
+    if ((_53.w - 0.5) < 0.0)
+    {
+        discard;
+    }
+    highp vec3 _98 = varying_COLOR1.xyz + (((((_53.xyz * varying_COLOR0.xyz) * min((float((texture2D(s_DepthMapSampler, varying_TEXCOORD1.xy / vec2(varying_TEXCOORD1.w)).x * varying_TEXCOORD1.w) > varying_TEXCOORD1.z) * varying_TEXCOORD0.z) + 0.800000011920928955078125, 1.0499999523162841796875)).xyz + (texture2D(s_EmissiveSampler, varying_TEXCOORD0.xy * g_fUVMul) * g_ftime).xyz).xyz - varying_COLOR1.xyz) * varying_COLOR1.w);
+    gl_FragColor = vec4(_98.x, _98.y, _98.z, _53.w);
+}
+

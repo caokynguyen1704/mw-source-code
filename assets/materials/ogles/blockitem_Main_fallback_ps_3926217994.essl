@@ -1,0 +1,11 @@
+//ver200 es blockitem_Main_fallback
+precision mediump float;
+precision highp int;
+
+varying highp vec4 in_var_POSITION;
+
+void main()
+{
+    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+}
+

@@ -1,0 +1,28 @@
+//ver200 es line_face
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D s_AlphaDISampler;
+uniform highp sampler2D s_DepthMapSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec4 varying_COLOR1;
+varying highp vec3 varying_TEXCOORD0;
+varying highp vec4 varying_TEXCOORD1;
+
+void main()
+{
+    highp vec4 _49 = texture2D(s_AlphaDISampler, varying_TEXCOORD0.xy);
+    highp float _50 = _49.x;
+    highp vec4 _51 = texture2D(s_DiffuseSampler, varying_TEXCOORD0.xy);
+    _51.w = _50;
+    if ((_50 - 0.5) < 0.0)
+    {
+        discard;
+    }
+    highp vec3 _82 = varying_COLOR1.xyz + ((((_51.xyz * varying_COLOR0.xyz) * min((float((texture2D(s_DepthMapSampler, varying_TEXCOORD1.xy / vec2(varying_TEXCOORD1.w)).x * varying_TEXCOORD1.w) > varying_TEXCOORD1.z) * varying_TEXCOORD0.z) + 0.800000011920928955078125, 1.0499999523162841796875)).xyz - varying_COLOR1.xyz) * varying_COLOR1.w);
+    gl_FragColor = vec4(_82.x, _82.y, _82.z, _51.w);
+}
+

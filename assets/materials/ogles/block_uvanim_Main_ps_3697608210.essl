@@ -1,0 +1,15 @@
+//ver200 es block_uvanim_Main
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+
+void main()
+{
+    gl_FragColor = texture2D(s_DiffuseSampler, varying_TEXCOORD0) * varying_COLOR0;
+}
+

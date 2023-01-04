@@ -1,0 +1,49 @@
+//ver200 es block_water
+precision mediump float;
+precision highp int;
+
+uniform highp float g_shadowdensity;
+uniform highp float g_fTime;
+uniform highp vec3 g_EyePos;
+uniform highp vec3 g_EyePosModel;
+uniform highp vec3 g_LightSCMPos;
+uniform highp vec4 g_ShadowCenter;
+uniform highp mat4 g_depthproj;
+uniform highp mat4 g_referencepoint;
+uniform highp vec3 g_warfogparameter;
+uniform highp vec3 g_warfogcolor;
+uniform highp vec4 g_AmbientLight;
+uniform highp vec4 g_DistFogColor;
+uniform highp vec4 g_FogParam;
+uniform highp mat4 g_World;
+uniform highp mat4 g_WorldView;
+uniform highp mat4 g_WorldViewProj;
+uniform highp vec3 g_ChunkOrigin;
+uniform highp vec4 g_SkyLightColor;
+uniform highp vec4 g_TorchLightColor;
+uniform highp float g_NumTexRepeat;
+uniform highp float g_fSpeed;
+uniform highp float g_fAmp;
+
+
+uniform highp sampler2D NormalSampler;
+uniform highp sampler2D s_DiffuseSampler;
+uniform highp sampler2D ReflectSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+varying highp vec2 varying_TEXCOORD1;
+varying highp vec4 varying_TEXCOORD2;
+varying highp vec4 varying_TEXCOORD3;
+varying highp vec2 varying_TEXCOORD4;
+
+void main()
+{
+    highp float _64 = g_fSpeed * g_fTime;
+    highp vec2 _71 = (varying_TEXCOORD1 * g_NumTexRepeat) * 0.800000011920928955078125;
+    highp vec3 _106 = normalize(varying_TEXCOORD3.xyz);
+    highp float _107 = _106.y;
+    gl_FragColor = vec4(mix(g_DistFogColor.xyz, mix(varying_COLOR0 * texture2D(s_DiffuseSampler, varying_TEXCOORD0), texture2D(ReflectSampler, (((((texture2D(NormalSampler, _71 + vec2(_64 * (-0.300000011920928955078125), 0.100000001490116119384765625)).xyz * 2.0) - (texture2D(NormalSampler, _71 + vec2(_64 * 0.300000011920928955078125, 0.100000001490116119384765625)).xyz * 2.0)).xyxy * g_fAmp) * 0.00999999977648258209228515625) + (varying_TEXCOORD2 * (1.0 / varying_TEXCOORD3.w))).xy), vec4(varying_COLOR0.w * 0.5)).xyz, vec3(varying_TEXCOORD4.x)), ((1.0 - (_107 * _107)) * 0.550000011920928955078125) + 0.3499999940395355224609375);
+}
+

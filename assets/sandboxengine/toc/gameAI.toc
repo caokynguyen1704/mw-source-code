@@ -1,0 +1,6 @@
+##AILua
+sandboxengine/gameAI/AILuaMob.lua
+sandboxengine/gameAI/AILuaTask.lua
+sandboxengine/gameAI/AILuaManager.lua
+sandboxengine/gameAI/Task/AILuaTempt.lua
+sandboxengine/gameAI/Task/AILuaLookIdle.lua

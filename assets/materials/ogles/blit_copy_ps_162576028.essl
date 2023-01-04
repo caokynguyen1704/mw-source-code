@@ -1,0 +1,13 @@
+//ver200 es blit_copy
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+
+varying highp vec2 varying_TEXCOORD0;
+
+void main()
+{
+    gl_FragColor = texture2D(s_DiffuseSampler, varying_TEXCOORD0);
+}
+

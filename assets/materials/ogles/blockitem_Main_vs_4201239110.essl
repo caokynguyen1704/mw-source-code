@@ -1,0 +1,41 @@
+//ver200 es blockitem_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_DistFogColor;
+uniform vec4 g_FogParam;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform vec4 g_SkyLightColor;
+uniform vec3 LightDir;
+uniform vec3 GrassColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform vec3 g_OverlayColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec4 in_var_COLOR0;
+varying vec4 varying_COLOR0;
+
+void main()
+{
+    vec4 _49 = in_var_COLOR0 * vec4(0.0039215688593685626983642578125, 0.0039215688593685626983642578125, 0.0039215688593685626983642578125, 0.0625);
+    float _50 = _49.w;
+    float _55 = floor(_50) * 0.066666670143604278564453125;
+    float _65 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _83 = vec4(_49.xyz, _55).xyz;
+    gl_Position = vec4(in_var_POSITION.xyz, 1.0) * g_WorldViewProj;
+    varying_COLOR0 = vec4((((((max(g_SkyLightColor.xyz * _65, g_TorchLightColor.xyz * g_InstanceData.y) + (g_AmbientLight.xyz * (1.0 - _65))) + vec3(0.20000000298023223876953125)) * _83) * in_var_POSITION.w) * vec3(0.0039215688593685626983642578125)) + (_83 * (1.0 - (fract(_50) * 1.06666672229766845703125))), _55);
+}
+

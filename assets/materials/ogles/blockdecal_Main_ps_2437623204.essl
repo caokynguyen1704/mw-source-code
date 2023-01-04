@@ -1,0 +1,17 @@
+//ver200 es blockdecal_Main
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D s_DiffuseSampler;
+
+varying highp vec4 in_var_POSITION;
+varying highp vec4 varying_COLOR0;
+varying highp vec2 varying_TEXCOORD0;
+
+void main()
+{
+    highp vec4 _29 = texture2D(s_DiffuseSampler, varying_TEXCOORD0);
+    highp vec3 _34 = mix(_29.xyz, varying_COLOR0.xyz, vec3(varying_COLOR0.w));
+    gl_FragColor = vec4(_34.x, _34.y, _34.z, _29.w);
+}
+

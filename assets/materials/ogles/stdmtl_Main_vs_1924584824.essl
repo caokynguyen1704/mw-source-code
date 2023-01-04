@@ -1,0 +1,66 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_DistFogColor;
+uniform vec4 g_FogParam;
+uniform vec4 g_BoneTM[210];
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform vec4 g_RimColor;
+uniform float g_RimPower;
+uniform float g_fUVMul;
+uniform float g_ftime;
+uniform vec3 g_MaskColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec4 in_var_BLENDWEIGHT;
+attribute vec4 in_var_BLENDINDICES;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD2;
+varying vec3 varying_TEXCOORD4;
+varying vec3 varying_TEXCOORD5;
+
+vec4 _59;
+
+void main()
+{
+    ivec4 _67 = ivec4(in_var_BLENDINDICES * 3.0);
+    int _68 = _67.x;
+    int _83 = _67.y;
+    int _99 = _67.z;
+    vec3 _114 = ((vec3(dot(in_var_POSITION, g_BoneTM[_68]), dot(in_var_POSITION, g_BoneTM[_68 + 1]), dot(in_var_POSITION, g_BoneTM[_68 + 2])) * in_var_BLENDWEIGHT.x) + (vec3(dot(in_var_POSITION, g_BoneTM[_83]), dot(in_var_POSITION, g_BoneTM[_83 + 1]), dot(in_var_POSITION, g_BoneTM[_83 + 2])) * in_var_BLENDWEIGHT.y)) + (vec3(dot(in_var_POSITION, g_BoneTM[_99]), dot(in_var_POSITION, g_BoneTM[_99 + 1]), dot(in_var_POSITION, g_BoneTM[_99 + 2])) * in_var_BLENDWEIGHT.z);
+    vec4 _119 = vec4(_114, 1.0);
+    float _146 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _164 = ((max(g_SkyLightColor.xyz * _146, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _146))) + vec3(0.20000000298023223876953125);
+    vec4 _166 = vec4(_164.x, _164.y, _164.z, _59.w);
+    _166.w = 0.0;
+    gl_Position = _119 * g_WorldViewProj;
+    varying_COLOR0 = _166;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _59.z, _59.w);
+    varying_TEXCOORD2 = clamp(vec2((g_FogParam.y - distance(_114, g_EyePosModel)) / (g_FogParam.y - g_FogParam.x), 1.0), vec2(0.0), vec2(1.0));
+    varying_TEXCOORD4 = normalize(normalize(normalize(in_var_NORMAL) * mat3(g_World[0].xyz, g_World[1].xyz, g_World[2].xyz)));
+    varying_TEXCOORD5 = normalize(g_EyePos - (_119 * g_World).xyz);
+}
+

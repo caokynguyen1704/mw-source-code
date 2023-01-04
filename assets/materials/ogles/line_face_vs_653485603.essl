@@ -1,0 +1,57 @@
+//ver200 es line_face
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_SunLightColor;
+uniform vec4 g_SunLightDir;
+uniform vec4 g_SpecularColor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_DistFogColor;
+uniform vec4 g_FogParam;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform vec3 g_ChunkOrigin;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform float g_fUV0Mul;
+uniform float g_fUVMul;
+uniform float g_ftime;
+uniform vec3 g_vSaturation;
+uniform vec3 g_vColorScale;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec4 in_var_COLOR0;
+attribute vec2 in_var_TEXCOORD0;
+varying vec4 varying_COLOR0;
+varying vec4 varying_COLOR1;
+varying vec3 varying_TEXCOORD0;
+varying vec4 varying_TEXCOORD1;
+
+void main()
+{
+    vec4 _70 = in_var_POSITION + vec4(g_ChunkOrigin, 0.0);
+    vec4 _75 = vec4(_70.xyz, 1.0);
+    vec4 _86 = in_var_COLOR0 * vec4(0.0039215688593685626983642578125);
+    float _87 = _70.w;
+    vec3 _112 = ((max(g_SkyLightColor.xyz * ((floor(_87 * 0.00390625) * 0.0078740157186985015869140625) * g_SkyLightColor.w), g_TorchLightColor.xyz * fract(_87 * 0.0078125)) + g_AmbientLight.xyz) * _86.xyz) * _86.w;
+    vec4 _133 = _75 * g_depthproj;
+    vec3 _152 = (vec3(in_var_TEXCOORD0, 1.0) * vec3(0.000244140625, 0.000244140625, 1.0)) * g_fUV0Mul;
+    _152.z = max(0.0, dot(normalize((vec4((in_var_NORMAL * vec3(0.007843137718737125396728515625)) - vec3(1.0), 1.0) * g_World).xyz).xyz, g_SunLightDir.xyz));
+    gl_Position = _75 * g_WorldViewProj;
+    varying_COLOR0 = vec4(_112.x, _112.y, _112.z, _86.w);
+    varying_COLOR1 = vec4(g_DistFogColor.xyz, clamp((g_FogParam.y - distance(_70.xyz, g_EyePosModel)) / (g_FogParam.y - g_FogParam.x), 0.0, 1.0));
+    varying_TEXCOORD0 = _152;
+    varying_TEXCOORD1 = vec4(_133.x, _133.y, _133.z, _133.w);
+}
+

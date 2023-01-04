@@ -1,0 +1,49 @@
+//ver200 es skyplane_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_SkyHeight;
+uniform float g_DayTime;
+uniform vec3 g_SunDirect;
+uniform vec4 g_SunColor;
+uniform float g_fSpeed;
+uniform vec4 g_SkyModColor;
+
+
+attribute vec3 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+varying vec4 varying_COLOR0;
+varying vec2 varying_TEXCOORD0;
+varying vec4 varying_TEXCOORD1;
+
+vec4 _41;
+
+void main()
+{
+    float _48 = g_fSpeed * 0.00999999977648258209228515625;
+    float _49 = sin(_48);
+    float _50 = cos(_48);
+    float _76 = (dot(g_SunDirect, in_var_NORMAL) + 1.0) * 0.5;
+    vec3 _81 = g_SunColor.xyz * (_76 * _76);
+    vec4 _85 = vec4(_81.x, _81.y, _81.z, _41.w);
+    _85.w = g_SunColor.w;
+    vec2 _93 = in_var_TEXCOORD0 * 1.2000000476837158203125;
+    gl_Position = (vec4(vec3((in_var_POSITION.x * _50) - (in_var_POSITION.y * _49), (in_var_POSITION.x * _49) + (in_var_POSITION.y * _50), in_var_POSITION.z) + g_EyePos, 1.0) * g_WorldViewProj).xyww;
+    varying_COLOR0 = _85;
+    varying_TEXCOORD0 = vec2(g_DayTime, 1.0 - (in_var_POSITION.y / g_SkyHeight));
+    varying_TEXCOORD1 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _93.x, _93.y);
+}
+

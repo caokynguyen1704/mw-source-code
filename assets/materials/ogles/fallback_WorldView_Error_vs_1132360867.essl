@@ -1,0 +1,12 @@
+//ver200 es fallback_WorldView_Error
+
+uniform mat4 g_WorldViewProj;
+
+
+attribute vec4 in_var_POSITION;
+
+void main()
+{
+    gl_Position = vec4(in_var_POSITION.xyz, 1.0) * g_WorldViewProj;
+}
+

@@ -1,0 +1,63 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform vec4 g_DistFogColor;
+uniform vec4 g_FogParam;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform float g_TransU;
+uniform float g_TransV;
+uniform float g_ScaleU;
+uniform float g_ScaleV;
+uniform float g_RotUV;
+uniform vec3 g_OverlayColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec2 in_var_TEXCOORD1;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD2;
+varying vec2 varying_TEXCOORD3;
+
+vec4 _54;
+
+void main()
+{
+    float _72 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _90 = ((max(g_SkyLightColor.xyz * _72, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _72))) + vec3(0.20000000298023223876953125);
+    vec4 _92 = vec4(_90.x, _90.y, _90.z, _54.w);
+    _92.w = 0.0;
+    float _108 = radians(g_RotUV);
+    vec2 _115 = (in_var_TEXCOORD1 - vec2(0.5)) * vec2(g_ScaleU, g_ScaleV);
+    float _116 = _115.x;
+    float _117 = cos(_108);
+    float _119 = _115.y;
+    float _120 = sin(_108);
+    gl_Position = vec4(in_var_POSITION.xyz, 1.0) * g_WorldViewProj;
+    varying_COLOR0 = _92;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _54.z, _54.w);
+    varying_TEXCOORD2 = clamp(vec2((g_FogParam.y - distance(in_var_POSITION.xyz, g_EyePosModel)) / (g_FogParam.y - g_FogParam.x), 1.0), vec2(0.0), vec2(1.0));
+    varying_TEXCOORD3 = (vec2((_116 * _117) + (_119 * _120), ((-_116) * _120) + (_119 * _117)) + vec2(0.5)) + vec2(g_TransU, g_TransV);
+}
+

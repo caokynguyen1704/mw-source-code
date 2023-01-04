@@ -1,0 +1,66 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform vec4 g_RimColor;
+uniform float g_RimPower;
+uniform float g_TransU;
+uniform float g_TransV;
+uniform float g_ScaleU;
+uniform float g_ScaleV;
+uniform float g_RotUV;
+uniform vec3 g_OverlayColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+attribute vec2 in_var_TEXCOORD1;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+varying vec2 varying_TEXCOORD3;
+varying vec3 varying_TEXCOORD4;
+varying vec3 varying_TEXCOORD5;
+
+vec4 _56;
+
+void main()
+{
+    vec4 _66 = vec4(in_var_POSITION.xyz, 1.0);
+    float _93 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _111 = ((max(g_SkyLightColor.xyz * _93, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _93))) + vec3(0.20000000298023223876953125);
+    vec4 _113 = vec4(_111.x, _111.y, _111.z, _56.w);
+    _113.w = 0.0;
+    float _117 = radians(g_RotUV);
+    vec2 _124 = (in_var_TEXCOORD1 - vec2(0.5)) * vec2(g_ScaleU, g_ScaleV);
+    float _125 = _124.x;
+    float _126 = cos(_117);
+    float _128 = _124.y;
+    float _129 = sin(_117);
+    gl_Position = _66 * g_WorldViewProj;
+    varying_COLOR0 = _113;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _56.z, _56.w);
+    varying_TEXCOORD3 = (vec2((_125 * _126) + (_128 * _129), ((-_125) * _129) + (_128 * _126)) + vec2(0.5)) + vec2(g_TransU, g_TransV);
+    varying_TEXCOORD4 = normalize(normalize(normalize(in_var_NORMAL) * mat3(g_World[0].xyz, g_World[1].xyz, g_World[2].xyz)));
+    varying_TEXCOORD5 = normalize(g_EyePos - (_66 * g_World).xyz);
+}
+

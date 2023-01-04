@@ -1,0 +1,47 @@
+//ver200 es stdmtl_Main
+
+uniform float g_shadowdensity;
+uniform float g_fTime;
+uniform vec3 g_EyePos;
+uniform vec3 g_EyePosModel;
+uniform vec3 g_LightSCMPos;
+uniform vec4 g_ShadowCenter;
+uniform mat4 g_depthproj;
+uniform mat4 g_referencepoint;
+uniform vec3 g_warfogparameter;
+uniform vec3 g_warfogcolor;
+uniform vec4 g_AmbientLight;
+uniform mat4 g_World;
+uniform mat4 g_WorldView;
+uniform mat4 g_WorldViewProj;
+uniform float g_ModelTransparent;
+uniform vec3 g_SelfPower;
+uniform float g_SpecPower;
+uniform vec3 g_SunDirection;
+uniform vec4 g_SkyLightColor;
+uniform vec4 g_TorchLightColor;
+uniform vec4 g_InstanceData;
+uniform float g_fUVMul;
+uniform float g_ftime;
+uniform vec3 g_MaskColor;
+
+
+attribute vec4 in_var_POSITION;
+attribute vec3 in_var_NORMAL;
+attribute vec2 in_var_TEXCOORD0;
+varying vec4 varying_COLOR0;
+varying vec4 varying_TEXCOORD0;
+
+vec4 _41;
+
+void main()
+{
+    float _58 = g_InstanceData.x * g_SkyLightColor.w;
+    vec3 _80 = (((max(g_SkyLightColor.xyz * _58, g_TorchLightColor.xyz * g_InstanceData.y) * 1.0) + (g_AmbientLight.xyz * (1.0 - _58))) + vec3(0.20000000298023223876953125)).xyz + g_SelfPower;
+    vec4 _82 = vec4(_80.x, _80.y, _80.z, _41.w);
+    _82.w = 0.0;
+    gl_Position = vec4(in_var_POSITION.xyz, 1.0) * g_WorldViewProj;
+    varying_COLOR0 = _82;
+    varying_TEXCOORD0 = vec4(in_var_TEXCOORD0.x, in_var_TEXCOORD0.y, _41.z, _41.w);
+}
+
